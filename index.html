@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gubbins Call</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: linear-gradient(180deg, #2a003f, #4b0082);
+      color: #fff;
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* Lightning flash overlay */
+    .flash {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.9);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 5;
+      transition: opacity 0.1s ease-out;
+    }
+
+    /* Lightning bolt style */
+    .bolt {
+      position: fixed;
+      width: 3px;
+      height: 150px;
+      background: white;
+      opacity: 0;
+      z-index: 6;
+      box-shadow: 0 0 20px white, 0 0 40px white;
+      transform: rotate(15deg);
+    }
+
+    header {
+      padding: 60px 20px;
+      position: relative;
+      z-index: 10;
+    }
+    header img {
+      width: 160px;
+      height: auto;
+      margin-bottom: 20px;
+      border-radius: 50%;
+      box-shadow: 0 0 25px purple;
+    }
+    h1 {
+      font-size: 3em;
+      color: #ffd700;
+    }
+    p {
+      font-size: 1.3em;
+      color: #eee;
+    }
+    a {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 14px 30px;
+      background: #0088cc;
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.2em;
+      border-radius: 6px;
+      transition: 0.3s;
+    }
+    a:hover {
+      background: #005f88;
+    }
+
+    section {
+      padding: 60px 20px;
+      max-width: 800px;
+      margin: auto;
+      position: relative;
+      z-index: 10;
+    }
+    section h2 {
+      font-size: 2em;
+      color: #ffd700;
+    }
+    section p {
+      margin: 20px 0;
+      line-height: 1.6em;
+    }
+
+    footer {
+      margin-top: 50px;
+      padding: 20px;
+      background: #220033;
+      color: #aaa;
+      position: relative;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Flash effect -->
+  <div class="flash"></div>
+
+  <!-- Thunder sound -->
+  <audio autoplay loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_0998f4e3f6.mp3?filename=thunder-strike-1-13895.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <header>
+    <img src="https://i.postimg.cc/p9QM2Xd1/380EA49F-2D70-4640-9E7E-2C8F7B801F50.jpg" alt="Gubbins Call Logo">
+    <h1>⚡ Gubbins Call ⚡</h1>
+    <p>Join our Telegram channel for exclusive calls and updates.</p>
+    <a href="https://t.me/gubblnCall" target="_blank">Join Telegram</a>
+  </header>
+
+  <section>
+    <h2>About Gubbins Call</h2>
+    <p>
+      Gubbins Call is your trusted community for premium calls, updates, and insights. 
+      Our channel brings you the latest opportunities, expert signals, and strategies to 
+      help you stay ahead of the game.
+    </p>
+  </section>
+
+  <section>
+    <h2>Why Join Us?</h2>
+    <p>
+      ⚡ Instant notifications<br>
+      ⚡ Reliable insights<br>
+      ⚡ A strong and growing community of traders and enthusiasts<br>
+      ⚡ Always one step ahead of the market
+    </p>
+  </section>
+
+  <footer>
+    &copy; 2025 Gubbins Call. All Rights Reserved.
+  </footer>
+
+  <script>
+    const flash = document.querySelector('.flash');
+
+    function triggerLightning() {
+      // Flash background
+      flash.style.opacity = 1;
+      setTimeout(() => flash.style.opacity = 0, 150);
+
+      // Create a bolt
+      const bolt = document.createElement('div');
+      bolt.classList.add('bolt');
+      bolt.style.top = Math.random() * window.innerHeight * 0.7 + 'px';
+      bolt.style.left = Math.random() * window.innerWidth + 'px';
+      bolt.style.height = (100 + Math.random() * 200) + 'px';
+      bolt.style.transform = `rotate(${Math.random() * 40 - 20}deg)`;
+      document.body.appendChild(bolt);
+
+      // Show bolt briefly
+      bolt.style.opacity = 1;
+      setTimeout(() => {
+        bolt.style.opacity = 0;
+        bolt.remove();
+      }, 200);
+    }
+
+    // Randomize lightning interval
+    function randomLightning() {
+      triggerLightning();
+      const next = 2000 + Math.random() * 5000; // 2–7 seconds
+      setTimeout(randomLightning, next);
+    }
+
+    // Start effect
+    randomLightning();
+  </script>
+
+</body>
+</html>
