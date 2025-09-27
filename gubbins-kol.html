@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gubbins Call</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      color: #fff;
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+      background: black;
+    }
+
+    canvas#gameCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      background: black;
+    }
+
+    .flash {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.9);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 5;
+      transition: opacity 0.1s ease-out;
+    }
+
+    .bolt {
+      position: fixed;
+      width: 3px;
+      background: white;
+      opacity: 0;
+      z-index: 6;
+      box-shadow: 0 0 20px white, 0 0 40px white;
+      transform: rotate(15deg);
+    }
+
+    header, section, footer {
+      position: relative;
+      z-index: 10;
+    }
+
+    header {
+      padding: 60px 20px;
+    }
+    header img {
+      width: 160px;
+      height: auto;
+      margin-bottom: 20px;
+      border-radius: 50%;
+      box-shadow: 0 0 25px purple;
+    }
+    h1 {
+      font-size: 3em;
+      color: #ffd700;
+    }
+    p {
+      font-size: 1.3em;
+      color: #eee;
+    }
+    a {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 14px 30px;
+      background: #0088cc;
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.2em;
+      border-radius: 6px;
+      transition: 0.3s;
+    }
+    a:hover {
+      background: #005f88;
+    }
+
+    section {
+      padding: 60px 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+    section h2 {
+      font-size: 2em;
+      color: #ffd700;
+    }
+    section p {
+      margin: 20px 0;
+      line-height: 1.7em;
+      font-size: 1.2em;
+    }
+
+    footer {
+      margin-top: 50px;
+      padding: 20px;
+      background: #220033;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="gameCanvas"></canvas>
+  <div class="flash"></div>
+
+  <!-- Background ambient sound -->
+  <audio autoplay loop>
+    <source src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_b0a43820f2.mp3?filename=dark-ambient-background-6211.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Thunder strike sound -->
+  <audio id="thunder-sound">
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_0998f4e3f6.mp3?filename=thunder-strike-1-13895.mp3" type="audio/mpeg">
+  </audio>
+
+  <header>
+    <img src="https://i.postimg.cc/p9QM2Xd1/380EA49F-2D70-4640-9E7E-2C8F7B801F50.jpg" alt="Gubbins Call Logo">
+    <h1>⚡ Gubbins Call ⚡</h1>
+    <p>Join our Telegram channel for exclusive calls, advertising projects, and promotions.</p>
+    <a href="https://t.me/gubblnCall" target="_blank">Join Telegram</a>
+  </header>
+
+  <section>
+    <h2>About Gubbins Call</h2>
+    <p>
+      Gubbins Call is your trusted community for premium calls, updates, and insights. 
+      We specialize in providing signals, early opportunities, and strategies that 
+      help our members grow their portfolios. With thousands of active followers, 
+      our influence is strong and continues to expand daily.
+    </p>
+  </section>
+
+  <section>
+    <h2>KOL Promotion & Advertising Projects</h2>
+    <p>
+      We also offer <strong>KOL promotion and advertising opportunities</strong> 
+      for projects looking to grow their exposure. By leveraging our large Telegram audience 
+      and community trust, we help brands, startups, and crypto projects expand their reach. 
+    </p>
+    <p>
+      🔥 Services we offer:<br>
+      • Sponsored posts<br>
+      • KOL collaborations<br>
+      • Banner/logo placements<br>
+      • Exclusive project highlights
+    </p>
+  </section>
+
+  <footer>
+    &copy; 2025 Gubbins Call. All Rights Reserved.
+  </footer>
+
+  <script>
+    // Thunder effect
+    const flash = document.querySelector('.flash');
+    const thunderSound = document.getElementById('thunder-sound');
+
+    function triggerLightning() {
+      flash.style.opacity = 1;
+      setTimeout(() => flash.style.opacity = 0, 150);
+
+      const bolt = document.createElement('div');
+      bolt.classList.add('bolt');
+      bolt.style.top = Math.random() * window.innerHeight * 0.7 + 'px';
+      bolt.style.left = Math.random() * window.innerWidth + 'px';
+      bolt.style.height = (100 + Math.random() * 200) + 'px';
+      bolt.style.transform = `rotate(${Math.random() * 40 - 20}deg)`;
+      document.body.appendChild(bolt);
+
+      bolt.style.opacity = 1;
+      setTimeout(() => {
+        bolt.style.opacity = 0;
+        bolt.remove();
+      }, 200);
+
+      thunderSound.currentTime = 0;
+      thunderSound.play();
+    }
+    setInterval(triggerLightning, 3000);
+
+    // Game environments
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let stars = [];
+    let bullets = [];
+    let bubbles = [];
+    let lava = [];
+    let leaves = [];
+    let ship = { x: canvas.width / 2, y: canvas.height - 80 };
+
+    function createStars() {
+      stars = [];
+      for (let i = 0; i < 100; i++) {
+        stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 2 });
+      }
+    }
+    function drawStars() {
+      ctx.fillStyle = "white";
+      for (let s of stars) {
+        ctx.fillRect(s.x, s.y, s.size, s.size);
+        s.y += 1;
+        if (s.y > canvas.height) s.y = 0;
+      }
+      // spaceship
+      ctx.fillStyle = "cyan";
+      ctx.beginPath();
+      ctx.moveTo(ship.x, ship.y);
+      ctx.lineTo(ship.x - 20, ship.y + 40);
+      ctx.lineTo(ship.x + 20, ship.y + 40);
+      ctx.closePath();
+      ctx.fill();
+      // bullets
+      ctx.fillStyle = "red";
+      for (let b of bullets) {
+        ctx.fillRect(b.x - 2, b.y - 10, 4, 10);
+        b.y -= 5;
+      }
+      bullets = bullets.filter(b => b.y > 0);
+    }
+
+    function createBubbles() {
+      bubbles = [];
+      for (let i = 0; i < 50; i++) {
+        bubbles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, r: Math.random() * 15 + 5 });
+      }
+    }
+    function drawBubbles() {
+      ctx.fillStyle = "rgba(0,150,255,0.5)";
+      for (let b of bubbles) {
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+        ctx.fill();
+        b.y -= 1;
+        if (b.y < 0) b.y = canvas.height;
+      }
+    }
+
+    function createLava() {
+      lava = [];
+      for (let i = 0; i < 50; i++) {
+        lava.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, r: Math.random() * 10 + 5 });
+      }
+    }
+    function drawLava() {
+      ctx.fillStyle = "orange";
+      for (let l of lava) {
+        ctx.beginPath();
+        ctx.arc(l.x, l.y, l.r, 0, Math.PI * 2);
+        ctx.fill();
+        l.y += 2;
+        if (l.y > canvas.height) l.y = 0;
+      }
+    }
+
+    function createLeaves() {
+      leaves = [];
+      for (let i = 0; i < 50; i++) {
+        leaves.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, r: Math.random() * 8 + 4 });
+      }
+    }
+    function drawLeaves() {
+      ctx.fillStyle = "limegreen";
+      for (let leaf of leaves) {
+        ctx.beginPath();
+        ctx.arc(leaf.x, leaf.y, leaf.r, 0, Math.PI * 2);
+        ctx.fill();
+        leaf.y += 1;
+        if (leaf.y > canvas.height) leaf.y = 0;
+      }
+    }
+
+    let mode = 0; // 0=space,1=bubbles,2=lava,3=leaves
+    createStars();
+    createBubbles();
+    createLava();
+    createLeaves();
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (mode === 0) drawStars();
+      if (mode === 1) drawBubbles();
+      if (mode === 2) drawLava();
+      if (mode === 3) drawLeaves();
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    setInterval(() => {
+      mode = (mode + 1) % 4;
+    }, 5000);
+
+    window.addEventListener("mousemove", e => {
+      ship.x = e.clientX;
+    });
+
+    setInterval(() => {
+      if (mode === 0) bullets.push({ x: ship.x, y: ship.y });
+    }, 500);
+  </script>
+
+</body>
+</html>
